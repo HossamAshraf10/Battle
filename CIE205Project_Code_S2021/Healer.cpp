@@ -16,7 +16,7 @@ void Healer::Move()
 			else SetDistance(Distance - speed / 2);
 		}
 
-		else //healthy 
+		else //healthy
 		{
 			if (Distance - speed < MinDistance) //return back due to over flow
 			{
@@ -53,15 +53,22 @@ void Healer::Move()
 	}
 }
 
+//public function calls triggers healing others only if not in reload period
 void Healer::Heal(Battle* battle)
 {
+	if (!isInReloadPeriod())
+	{
+		healFighters(battle);
+		healFreezers(battle);
+		healHealers(battle);
 
-	healFighters(battle);
-	healFreezers(battle);
-	healFreezers(battle);
 
+
+		waitTillNextShot = 0; //to wait again till period finishes
+	}
 }
 
+//private function does the healing
 void Healer::_heal(Healer* healer, Enemy* healed)
 {
 	int dist;

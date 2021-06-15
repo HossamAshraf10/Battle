@@ -10,12 +10,16 @@ class Enemy
 {
 
 protected:
+
 	int ID, ArrvTime, power, reload, Distance, speed;
+
 	int  KillTime, FirstShotTime;
 	ENMY_TYPE type;
 	ENMY_STATUS status;	    //status of the enemy (inactive, inactive, frosted, killed)
 	double health, maxHealth;
 	int priority;
+	int waitTillNextShot;
+	bool isInReloadPeriod();
 
 public:
 	Enemy(int id, ENMY_TYPE type, int arrTime, double health, int power,
@@ -26,6 +30,8 @@ public:
 		SetArrvTime(arrtime);
 		SetDistance(distance);
 	} //hossam
+
+
 
 	virtual ~Enemy();
 	//Getters and setters
@@ -100,4 +106,3 @@ public:
 	//
 
 };
-
