@@ -113,7 +113,6 @@ void Healer::healHealers(Battle* battle)
 	int size = actv_healers->getSize();
 	ArrayStack<Healer*> tempHealers(size);
 	Healer* currentHealer;
-	int dist;
 
 	while (actv_healers->pop(currentHealer))
 	{
@@ -136,7 +135,6 @@ void Healer::healFreezers(Battle* battle)
 	Queue<Freezer*> tempFreezers;
 	Freezer* currentFreezer;
 	Queue<Freezer*>* actv_freezers = battle->getActvFreezers();
-	int dist;
 
 	while (actv_freezers->dequeue(currentFreezer))
 	{
