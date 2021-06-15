@@ -8,10 +8,11 @@ class Castle
 	int N; //The number of eniemes attacked per attack
 	double power; // the power of the fire
 	double originalHealth;
-	//ArrayStack<int> Bullets(500);
-	//ArrayStack<int> Ice(500);
-	//
-	// TODO: Add More Data Members As Needed
+
+	double IceThreshold;
+	double accumulatedIce; //I choose it be 1/4 original health value
+
+
 	//
 
 public:
@@ -26,9 +27,13 @@ public:
 
 	double GetOriginalHealth() const;
 	void SetOriginalHealth(double h);
+	
+	bool isCastleFreezed();
+	double getAccumulatedIce();
+	void accumulateIce(double ice);
 	//
 	// TODO: Add More Member Functions As Needed
 	//
 
 };
-
+ 

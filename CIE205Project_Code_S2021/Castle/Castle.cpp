@@ -15,7 +15,19 @@ Castle::Castle(double Health, int N, double power)
 	this->Health = Health;
 	this->N = N;
 	this->power = power;
+	this->accumulatedIce = 0;
+	IceThreshold = originalHealth / 4;
 }
+
+bool Castle::isCastleFreezed()
+{
+	return (getAccumulatedIce() > IceThreshold);
+}
+
+double Castle::getAccumulatedIce() { return accumulatedIce; }
+
+void Castle::accumulateIce(double ice) { accumulatedIce += ice; }
+
 
 void Castle::SetHealth(double h)
 {

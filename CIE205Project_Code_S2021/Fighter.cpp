@@ -25,7 +25,7 @@ void Fighter::fight(Castle* castle)
 	double k = 0;
 	double damage = 0;
 
-	if (!isInReloadPeriod()) //
+	if (!isInReloadPeriod()) 
 	{
 		if (health < 50) k = 0.5;
 		else k = 1;
