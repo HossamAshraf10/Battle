@@ -54,7 +54,7 @@ private:
 public:
 	Queue();
 	bool isEmpty() const;
-	bool enqueue(T& newEntry);
+	bool enqueue(T newEntry);
 	bool dequeue(T& frntEntry);
 	bool peekFront(T& frntEntry)  const;
 
@@ -107,7 +107,7 @@ Output: True if the operation is successful; otherwise false.
 */
 
 template <typename T>
-bool Queue<T>::enqueue(T& newEntry)
+bool Queue<T>::enqueue(T newEntry)
 {
 	Node<T>* newNodePtr = new Node<T>(newEntry);
 	// Insert the new node

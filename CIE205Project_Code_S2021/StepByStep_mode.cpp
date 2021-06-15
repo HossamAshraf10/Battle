@@ -11,12 +11,14 @@ void StepByStep_mode::Run()
 
 		move_all_enimies();
 		Act_all_enemies();
+		battle->LetCastleAttach(battle->getCurrentTimeStep());
 
 		//Drawing
 		pGUI->ResetDrawingList();
 		battle->AddAllListsToDrawingList();
 		pGUI->UpdateInterface(battle->GetCastle()->GetHealth());
-		pGUI->waitForClick();
+		Sleep(500);
+
 	}
 
 }

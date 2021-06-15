@@ -1,4 +1,6 @@
 #include "Freezer.h"
+#include "Castle/Castle.h"
+
 
 void Freezer::Move()
 {

@@ -1,4 +1,5 @@
 #include "Fighter.h"
+#include "Castle/Castle.h"
 
 void Fighter::Move()
 {
@@ -7,8 +8,8 @@ void Fighter::Move()
 	{
 		if (health <= 50) //not healthy
 		{
-			if (Distance - speed/2 < MinDistance) SetDistance(MinDistance); 
-			else SetDistance(Distance - speed/2);
+			if (Distance - speed / 2 < MinDistance) SetDistance(MinDistance);
+			else SetDistance(Distance - speed / 2);
 		}
 		else //healthy 
 		{
@@ -23,7 +24,7 @@ void Fighter::fight(Castle* castle)
 	static double k = 0;
 	static double damage = 0;
 	waitTillNextShot++;
-	if (waitTillNextShot==reload+1)
+	if (waitTillNextShot == reload + 1)
 	{
 		if (health < 50) k = 0.5;
 		else k = 1;
@@ -34,4 +35,6 @@ void Fighter::fight(Castle* castle)
 	}
 
 }
+
+
 

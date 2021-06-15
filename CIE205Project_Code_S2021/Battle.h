@@ -92,6 +92,8 @@ public:
 
 	int getNumKilled();
 	int getNumAlive();
+
+	void LetCastleAttach(int crntTime);
 };
 
 #endif // ! BATTLE

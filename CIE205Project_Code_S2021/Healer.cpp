@@ -2,7 +2,7 @@
 
 void Healer::Move()
 {
-	static bool towardsCastle = true; 
+	static bool towardsCastle = true;
 
 	if (towardsCastle)
 	{
@@ -58,15 +58,15 @@ void Healer::Heal(Battle* battle)
 
 	healFighters(battle);
 	healFreezers(battle);
-	healHealers(battle);
+	healFreezers(battle);
 
 }
 
 void Healer::_heal(Healer* healer, Enemy* healed)
 {
 	int dist;
-	double k1,k2,k3;
-	dist = healer->GetDistance()- healed->GetDistance();
+	double k1, k2, k3;
+	dist = healer->GetDistance() - healed->GetDistance();
 
 	if (dist <= 2 && dist >= -2) //min 0.25, max 2
 	{
@@ -76,12 +76,13 @@ void Healer::_heal(Healer* healer, Enemy* healed)
 
 		if (healer->GetHealth() <= 50) k2 = 0.5;
 		else k2 = 1;
-		
-		if (dist = 0) k3 = 2;
-		else if (dist = 1 || dist == -1) k3 = 1.5;
+
+		if (dist == 0) k3 = 2;
+		else if (dist == 1 || dist == -1) k3 = 1.5;
 		else k3 = 1;
+		healed->SetHealth(healed->GetHealth() + k1 * k2 * k3);
+
 	}
-	healed->SetHealth(healed->GetHealth()+k1*k2*k3);
 }
 
 void Healer::healFighters(Battle* battle)
@@ -90,12 +91,12 @@ void Healer::healFighters(Battle* battle)
 	PriorityQueue<Fighter*> tempFighters;
 	Fighter* currentFighter = NULL;
 	PriorityQueue<Fighter*>* actv_fighters = battle->getActvFighters();
-	
+
 
 	while (!actv_fighters->isEmpty())
 	{
 		actv_fighters->dequeue(currentFighter);
-		
+
 		if (!currentFighter->isHealthFul()) _heal(this, currentFighter);
 
 		tempFighters.enqueue(currentFighter);
@@ -113,10 +114,11 @@ void Healer::healHealers(Battle* battle)
 	int size = actv_healers->getSize();
 	ArrayStack<Healer*> tempHealers(size);
 	Healer* currentHealer;
+	int dist;
 
 	while (actv_healers->pop(currentHealer))
 	{
-		
+
 		if (!currentHealer->isHealthFul()) _heal(this, currentHealer);
 
 		tempHealers.push(currentHealer);
@@ -135,6 +137,7 @@ void Healer::healFreezers(Battle* battle)
 	Queue<Freezer*> tempFreezers;
 	Freezer* currentFreezer;
 	Queue<Freezer*>* actv_freezers = battle->getActvFreezers();
+	int dist;
 
 	while (actv_freezers->dequeue(currentFreezer))
 	{

@@ -24,12 +24,13 @@ void Interactive_mode::Run()
 		
 		move_all_enimies();
 		Act_all_enemies();
+		battle->GetCastle()->Fight(battle,battle->getCurrentTimeStep());
 
 		//Drawing
 		pGUI->ResetDrawingList();
 		battle->AddAllListsToDrawingList();
 		pGUI->UpdateInterface(battle->GetCastle()->GetHealth());
-		Sleep(500);
+		pGUI->waitForClick();
 	}
 	
 }

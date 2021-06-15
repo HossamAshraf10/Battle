@@ -36,6 +36,8 @@ void Battle_mode::move_all_enimies()
 void Battle_mode::Act_all_enemies()
 {
 	actFighters();
+	actHealers();
+	actFreezers();
 }
 
 void Battle_mode::actFighters() 
