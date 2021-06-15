@@ -72,7 +72,8 @@ void Healer::Heal(Battle* battle)
 void Healer::_heal(Healer* healer, Enemy* healed)
 {
 	int dist;
-	double k1, k2, k3;
+	double k1, k2, k3, k4;
+	k4 = power / 10;
 	dist = healer->GetDistance() - healed->GetDistance();
 
 	if (dist <= 2 && dist >= -2) //min 0.25, max 2
@@ -87,7 +88,7 @@ void Healer::_heal(Healer* healer, Enemy* healed)
 		if (dist == 0) k3 = 2;
 		else if (dist == 1 || dist == -1) k3 = 1.5;
 		else k3 = 1;
-		healed->SetHealth(healed->GetHealth() + k1 * k2 * k3);
+		healed->SetHealth(healed->GetHealth() + k1 * k2 * k3 * k4);
 	}
 } 
 
@@ -120,7 +121,6 @@ void Healer::healHealers(Battle* battle)
 	int size = actv_healers->getSize();
 	ArrayStack<Healer*> tempHealers(size);
 	Healer* currentHealer;
-	int dist;
 
 	while (actv_healers->pop(currentHealer))
 	{
@@ -143,7 +143,6 @@ void Healer::healFreezers(Battle* battle)
 	Queue<Freezer*> tempFreezers;
 	Freezer* currentFreezer;
 	Queue<Freezer*>* actv_freezers = battle->getActvFreezers();
-	int dist;
 
 	while (actv_freezers->dequeue(currentFreezer))
 	{

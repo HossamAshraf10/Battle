@@ -57,7 +57,7 @@ public:
 	bool enqueue(T newEntry);
 	bool dequeue(T& frntEntry);
 	bool peekFront(T& frntEntry)  const;
-
+	int getSize();
 	//toArray function to be used ONLY when drawing the queue items
 	const T* toArray(int& count);	//returns array of T (array of items)
 
@@ -178,6 +178,24 @@ Queue<T>::~Queue()
 {
 }
 
+
+//////////////////////////////////////////
+template <typename T>
+int Queue<T>::getSize()
+{
+	T element;
+	int count = 0;
+	Queue<T>* temp=new Queue<T>;
+	while (this->dequeue(element))
+	{
+		count++;
+		temp->enqueue(element);
+	}
+	while (temp->dequeue(element)) this->enqueue(element);
+
+	delete temp;
+	return count;
+}
 /////////////////////////////////////////////////////////////////////////////////////////
 
 /*
@@ -222,5 +240,7 @@ const T* Queue<T>::toArray(int& count)
 	//toArray function to be used ONLY when drawing the queue items
 
 }
+
+///////////////////////////////
 
 #endif

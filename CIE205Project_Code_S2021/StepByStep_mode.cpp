@@ -16,8 +16,8 @@ void StepByStep_mode::Run()
 		//Drawing
 		pGUI->ResetDrawingList();
 		battle->AddAllListsToDrawingList();
-		pGUI->UpdateInterface(battle->GetCastle()->GetHealth());
-		Sleep(1000);
+		pGUI->UpdateInterface(battle->StatusBarInformation());
+		Sleep(50);
 	}
 
 }
