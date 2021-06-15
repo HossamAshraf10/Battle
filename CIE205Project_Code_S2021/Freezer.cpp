@@ -23,10 +23,17 @@ void Freezer::Move()
 
 void Freezer::Freeze(Castle* castle)
 {
+	double k = 0;
+	double ice = 0;
 
 	if (!isInReloadPeriod())
 	{
+		if (health < 50) k = 0.5;
+		else k = 1;
 
-		waitTillNextShot = 0;
+		ice = k * ((double)power) / Distance; 
+		castle->accumulateIce(ice);
+
+		waitTillNextShot = 0; //to wait again till period finishes
 	}
 }

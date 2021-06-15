@@ -20,10 +20,11 @@ class Castle
 	int N; //The number of eniemes attacked per attack
 	double power; // the power of the fire
 	double originalHealth;
-	//ArrayStack<int> Bullets(500);
-	//ArrayStack<int> Ice(500);
-	//
-	// TODO: Add More Data Members As Needed
+
+	double IceThreshold;
+	double accumulatedIce; //I choose it be 1/4 original health value
+
+
 	//
 
 	int AttackFighters(PriorityQueue<Fighter*>*, Queue<Enemy*>* kld_enms, int max, int crntTime);
@@ -47,13 +48,17 @@ public:
 	double GetOriginalHealth() const;
 	void SetOriginalHealth(double h);
 
+	
+	bool isCastleFreezed();
+	double getAccumulatedIce();
+	void accumulateIce(double ice);
 	//void Fight(Battle* battle);
-	//
-	// TODO: Add More Member Functions As Needed
-	//
+
+	
 	void Fight(Battle* battle, int curntTime);
 
 
 };
+
 
 #endif
