@@ -12,7 +12,7 @@ void Silent_mode::Run()
 
 		move_all_enimies();
 		Act_all_enemies();
-		battle->LetCastleAttach(battle->getCurrentTimeStep());
+		battle->GetCastle()->Fight(battle, battle->getCurrentTimeStep());
 
 	}
 

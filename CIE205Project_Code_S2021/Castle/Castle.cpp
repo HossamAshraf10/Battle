@@ -2,6 +2,11 @@
 #include "..\Battle.h"
 
 #include <iostream>
+
+#include <stdlib.h>
+#include <ctime>
+
+
 using namespace std;
 
 Castle::Castle()
@@ -86,16 +91,116 @@ double Castle::GetOriginalHealth() const
 */
 void Castle::Fight(Battle* battle, int curntTime)
 {
+	UnfreezeEnms(battle, curntTime);
+	srand(time(0));
+	double result = 0 + (std::rand() % (100 - 0 + 1));
+	if (result > 20)
+		FightBullets(battle, curntTime);
+	else
+		FightIce(battle, curntTime);
+
+
+}
+
+void Castle::FightBullets(Battle* battle, int curntTime)
+{
 	int numAttacked = 0;
 	numAttacked += AttackFighters(battle->getActvFighters(), battle->getKilledEnimies(), N, curntTime);
 	if (numAttacked < N)
+		numAttacked += AttackFrozenFighters(battle->getFrzonEnimies(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+
+	//Attack healers
+	if (numAttacked < N)
+		numAttacked += AttachHealers(battle->getActvHealers(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+	if (numAttacked < N)
+		numAttacked += AttachFrozenHealers(battle->getFrzonEnimies(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+
+	//Attack freezers
+	if (numAttacked < N)
+		AttackFrozen(battle->getActvFreezers(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+	if (numAttacked < N)
+		numAttacked += AttackFrozednFrozen(battle->getFrzonEnimies(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+}
+
+void Castle::FightIce(Battle* battle, int curntTime)
+{
+	int numAttacked = 0;
+	numAttacked += AttackFightersByIce(battle->getActvFighters(), battle->getFrzonEnimies(), N, curntTime, numAttacked);
+	if (numAttacked < N)
 		//Attack healers
-		numAttacked += AttachHealers(battle->getActvHealers(), battle->getKilledEnimies(), N, curntTime);
+		numAttacked += AttachHealersByIce(battle->getActvHealers(), battle->getFrzonEnimies(), N, curntTime, numAttacked);
 	if (numAttacked < N)
 		//Attack freezers
-		AttackFrozen(battle->getActvFreezers(), battle->getKilledEnimies(), N, curntTime);
+		AttackFrozen(battle->getActvFreezers(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+}
+
+/*
+	Fighters Take 3 time step to unfreeze
+	healers take 2
+	freezers take 1
+*/
+void Castle::UnfreezeEnms(Battle* battle, int curntTime)
+{
+	PriorityQueue<Enemy*>* frzn = battle->getFrzonEnimies();
+	PriorityQueue<Enemy*>* tmpFrzn = new PriorityQueue<Enemy*>();
+	while (!frzn->isEmpty())
+	{
+		Enemy* tmpEmy ;
+		frzn->dequeue(tmpEmy);
+		Fighter* fighter = dynamic_cast<Fighter*>(tmpEmy);
+		Freezer* freezer = dynamic_cast<Freezer*>(tmpEmy);
+		Healer* healer = dynamic_cast<Healer*>(tmpEmy);
+		if (fighter != nullptr)
+		{
+			if ((curntTime - tmpEmy->GetFrostingTime()) > 3)
+			{
+				battle->getActvFighters()->enqueue(fighter);
+				fighter->SetStatus(ACTV);
+			}
+			else
+			{
+				tmpFrzn->enqueue(fighter);
+			}
+		}
+
+		else if (freezer != nullptr)
+		{
+			if ((curntTime - tmpEmy->GetFrostingTime()) > 2)
+			{
+				battle->getActvFreezers()->enqueue(freezer);
+				freezer->SetStatus(ACTV);
+			}
+			else
+			{
+				tmpFrzn->enqueue(freezer);
+			}
+		}
+		else if (healer != nullptr)
+		{
+			if ((curntTime - tmpEmy->GetFrostingTime()) > 2)
+			{
+				battle->getActvHealers()->push(healer);
+				healer->SetStatus(ACTV);
+			}
+			else
+			{
+				tmpFrzn->enqueue(healer);
+			}
+		}
+
+	}
+
+	//reverse
+	while (!tmpFrzn->isEmpty())
+	{
+		Enemy* tmpEmy;
+		tmpFrzn->dequeue(tmpEmy);
+		battle->getFrzonEnimies()->enqueue(tmpEmy);
+	}
 
 }
+
+
 
 int Castle::AttackFighters(PriorityQueue<Fighter*>* actvFighters, Queue<Enemy*>* kld_enms, int max, int crntTime)
 {
@@ -112,14 +217,17 @@ int Castle::AttackFighters(PriorityQueue<Fighter*>* actvFighters, Queue<Enemy*>*
 
 		}
 		if (tmpFighter->GetHealth() > 0)
+		{
 			tmpQ->enqueue(tmpFighter);
+
+		}
 		else
 		{
 			kld_enms->enqueue(tmpFighter);
 			tmpFighter->SetStatus(KILD);
 			tmpFighter->SetKillTime(crntTime);
 		}
-			
+
 
 	}
 	//putting them back:
@@ -130,6 +238,59 @@ int Castle::AttackFighters(PriorityQueue<Fighter*>* actvFighters, Queue<Enemy*>*
 
 	}
 
+	return totalAttacked;
+}
+
+int Castle::AttackFrozenFighters(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>* kld_enms, int max, int crntTime, int alreadyKld)
+{
+	PriorityQueue<Enemy*>* tmpFrzns = new PriorityQueue<Enemy*>();
+	int totalAttacked = alreadyKld;
+	while (!frzn_enms->isEmpty())
+	{
+		Enemy* tmpEmy;
+		frzn_enms->dequeue(tmpEmy);
+		Fighter* fighter = dynamic_cast<Fighter*>(tmpEmy);
+		Freezer* freezer = dynamic_cast<Freezer*>(tmpEmy);
+		Healer* healer = dynamic_cast<Healer*>(tmpEmy);
+		if (fighter != nullptr)
+		{
+			if (IsWorthFighterAttack(fighter, ACTV) && totalAttacked <= max)
+			{
+				totalAttacked++;
+				fighter->SetHealth(fighter->GetHealth() - GetDamagetToFighter(fighter));
+
+			}
+			if (fighter->GetHealth() > 0)
+			{
+				tmpFrzns->enqueue(fighter);
+
+			}
+			else
+			{
+				cout << "Kld: " << fighter->GetID() << endl;
+				kld_enms->enqueue(fighter);
+				fighter->SetStatus(KILD);
+				fighter->SetKillTime(crntTime);
+
+			}
+		}
+		else
+		{
+			tmpFrzns->enqueue(tmpEmy);
+		}
+
+
+
+	}
+
+	//reverse
+
+	while (!tmpFrzns->isEmpty())
+	{
+		Enemy* tmpEnmy = tmpFrzns->dequeue();
+		frzn_enms->enqueue(tmpEnmy);
+
+	}
 	return totalAttacked;
 }
 
@@ -158,10 +319,10 @@ int Castle::GetDamagetToOthers(Enemy* enmy)
 	return (1.0 / enmy->GetDistance()) * this->GetPower() * (1.0 / k);
 }
 
-int Castle::AttachHealers(ArrayStack<Healer*>* healers, Queue<Enemy*>* kld_enms, int max, int crntTime)
+int Castle::AttachHealers(ArrayStack<Healer*>* healers, Queue<Enemy*>* kld_enms, int max, int crntTime, int alreadyKld)
 {
 	ArrayStack<Healer*>* tmpH = new ArrayStack<Healer*>(healers->getSize());
-	int totalAttacked = 0;
+	int totalAttacked = alreadyKld;
 	while (!healers->isEmpty())
 	{
 		Healer* tmpHealer;
@@ -173,7 +334,9 @@ int Castle::AttachHealers(ArrayStack<Healer*>* healers, Queue<Enemy*>* kld_enms,
 			setFirstShotTime(tmpHealer, crntTime);
 		}
 		if (tmpHealer->GetHealth() > 0)
+		{
 			tmpH->push(tmpHealer);
+		}
 		else
 		{
 			kld_enms->enqueue(tmpHealer);
@@ -192,10 +355,65 @@ int Castle::AttachHealers(ArrayStack<Healer*>* healers, Queue<Enemy*>* kld_enms,
 	return totalAttacked;
 }
 
-int Castle::AttackFrozen(Queue<Freezer*>* actv_freezers, Queue<Enemy*>* kld_enms, int max, int crntTime)
+int Castle::AttachFrozenHealers(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>* kld_enms, int max, int crntTime, int alreadyKld)
+{
+	PriorityQueue<Enemy*>* tmpFrzns = new PriorityQueue<Enemy*>();
+	int totalAttacked = alreadyKld;
+	while (!frzn_enms->isEmpty())
+	{
+		Enemy* tmpEmy;
+		frzn_enms->dequeue(tmpEmy);
+
+		Fighter* fighter = dynamic_cast<Fighter*>(tmpEmy);
+		Freezer* freezer = dynamic_cast<Freezer*>(tmpEmy);
+		Healer* healer = dynamic_cast<Healer*>(tmpEmy);
+		if (healer != nullptr)
+		{
+			if (totalAttacked <= max)
+			{
+				totalAttacked++;
+				healer->SetHealth(healer->GetHealth() - GetDamagetToOthers(healer));
+
+			}
+			if (healer->GetHealth() > 0)
+			{
+				tmpFrzns->enqueue(healer);
+
+			}
+			else
+			{
+				cout << "Kld: " << healer->GetID() << endl;
+				kld_enms->enqueue(healer);
+				healer->SetStatus(KILD);
+				healer->SetKillTime(crntTime);
+
+			}
+		}
+		else
+		{
+			tmpFrzns->enqueue(tmpEmy);
+		}
+
+
+
+	}
+
+	//reverse
+
+	while (!tmpFrzns->isEmpty())
+	{
+		Enemy* tmpEnmy = tmpFrzns->dequeue();
+		frzn_enms->enqueue(tmpEnmy);
+
+	}
+	return totalAttacked;
+
+}
+
+int Castle::AttackFrozen(Queue<Freezer*>* actv_freezers, Queue<Enemy*>* kld_enms, int max, int crntTime, int alreadyKld)
 {
 	Queue<Freezer*>* tmpF = new Queue<Freezer*>();
-	int totalAttacked = 0;
+	int totalAttacked = alreadyKld;
 	while (!actv_freezers->isEmpty())
 	{
 		Freezer* tmpFreezer;
@@ -207,7 +425,9 @@ int Castle::AttackFrozen(Queue<Freezer*>* actv_freezers, Queue<Enemy*>* kld_enms
 			setFirstShotTime(tmpFreezer, crntTime);
 		}
 		if (tmpFreezer->GetHealth() > 0)
+		{
 			tmpF->enqueue(tmpFreezer);
+		}
 		else
 		{
 			kld_enms->enqueue(tmpFreezer);
@@ -225,6 +445,61 @@ int Castle::AttackFrozen(Queue<Freezer*>* actv_freezers, Queue<Enemy*>* kld_enms
 		actv_freezers->enqueue(tmpFreezer);
 	}
 	return totalAttacked;
+}
+
+int Castle::AttackFrozednFrozen(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>* kld_enms, int max, int crntTime, int alreadyKld)
+{
+	PriorityQueue<Enemy*>* tmpFrzns = new PriorityQueue<Enemy*>();
+	int totalAttacked = alreadyKld;
+	while (!frzn_enms->isEmpty())
+	{
+		Enemy* tmpEmy;
+		frzn_enms->dequeue(tmpEmy);
+
+		Fighter* fighter = dynamic_cast<Fighter*>(tmpEmy);
+		Freezer* freezer = dynamic_cast<Freezer*>(tmpEmy);
+		Healer* healer = dynamic_cast<Healer*>(tmpEmy);
+		if (freezer != nullptr)
+		{
+			if (totalAttacked <= max)
+			{
+				totalAttacked++;
+				freezer->SetHealth(freezer->GetHealth() - GetDamagetToOthers(freezer));
+
+			}
+			if (freezer->GetHealth() > 0)
+			{
+				tmpFrzns->enqueue(freezer);
+
+			}
+			else
+			{
+				cout << "Kld: " << freezer->GetID() << endl;
+				kld_enms->enqueue(freezer);
+				freezer->SetStatus(KILD);
+				freezer->SetKillTime(crntTime);
+
+			}
+		}
+		else
+		{
+			tmpFrzns->enqueue(tmpEmy);
+		}
+
+
+
+	}
+
+	//reverse
+
+	while (!tmpFrzns->isEmpty())
+	{
+		Enemy* tmpEnmy = tmpFrzns->dequeue();
+		frzn_enms->enqueue(tmpEnmy);
+
+	}
+	return totalAttacked;
+
 }
 
 void Castle::setFirstShotTime(Enemy* enmy, int curntTIme)

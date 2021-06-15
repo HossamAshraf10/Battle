@@ -28,12 +28,29 @@ class Castle
 	//
 
 	int AttackFighters(PriorityQueue<Fighter*>*, Queue<Enemy*>* kld_enms, int max, int crntTime);
+	int AttackFrozenFighters(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>* kld_enms, int max, int crntTime, int alreadyKld);
 	bool IsWorthFighterAttack(Fighter* fighter, ENMY_STATUS status);
 	double GetDamagetToFighter(Fighter* fighter);
 	int GetDamagetToOthers(Enemy* fighter);
-	int AttachHealers(ArrayStack<Healer*>*, Queue<Enemy*>* kld_enms, int max, int crntTime);
-	int AttackFrozen(Queue<Freezer*>* actv_freezers, Queue<Enemy*>* kld_enms, int max, int crntTime);
+	int AttachHealers(ArrayStack<Healer*>*, Queue<Enemy*>* kld_enms, int max, int crntTime,  int alreadyKld);
+	int AttachFrozenHealers(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>* kld_enms, int max, int crntTime,  int alreadyKld);
+
+	int AttackFrozen(Queue<Freezer*>* actv_freezers, Queue<Enemy*>* kld_enms, int max, int crntTime, int alreadyKld);
+	int AttackFrozednFrozen(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>* kld_enms, int max, int crntTime, int alreadyKld);
 	void setFirstShotTime(Enemy* enmy, int curntTIme);
+
+
+	int AttackFightersByIce(PriorityQueue<Fighter*>*, PriorityQueue<Enemy*>* frzn_enms, int max, int crntTime, int alrdyKild);
+	int AttachHealersByIce(ArrayStack<Healer*>*, PriorityQueue<Enemy*>* frzn_enms, int max, int crntTime, int alrdyKild);
+	int AttackFrozenByIce(Queue<Freezer*>* actv_freezers, PriorityQueue<Enemy*>* frzn_enms, int max, int crntTime);
+
+
+
+
+	void FightBullets(Battle* battle, int curntTime);
+	void FightIce(Battle* battle, int curntTime);
+	void UnfreezeEnms(Battle* battle, int curntTime);
+
 
 public:
 	Castle();
@@ -56,6 +73,7 @@ public:
 
 	
 	void Fight(Battle* battle, int curntTime);
+	
 
 
 };
