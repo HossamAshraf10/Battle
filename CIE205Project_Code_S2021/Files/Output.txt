@@ -1,0 +1,6 @@
+Game Is Loss
+KTS	ID	FD	KD	LT	
+Castle Total Damage         = 200
+Total Enemies                   = 6
+Average First - Shot Delay = 0
+Average Kill Delay	         = 0
