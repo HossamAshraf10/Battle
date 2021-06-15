@@ -20,6 +20,7 @@ protected:
 	int priority;
 	int waitTillNextShot;
 	bool isInReloadPeriod();
+	int frostingTime;
 
 public:
 	Enemy(int id, ENMY_TYPE type, int arrTime, double health, int power,
@@ -79,6 +80,17 @@ public:
 	double GetMaxHealth()
 	{
 		return maxHealth;
+	}
+
+	int GetFrostingTime()
+	{
+		return frostingTime;
+	}
+	
+	
+	void SetFrostingTime(int frostingTime)
+	{
+		this->frostingTime=frostingTime;
 	}
 	bool isHealthFul() { return (maxHealth - health) < 0.1; }
 	ENMY_STATUS GetStatus() const { return status; }
