@@ -17,13 +17,18 @@ Enemy::Enemy(int id, ENMY_TYPE type, int arrTime, double health, int power,
 	//
 	FirstShotTime = 0;
 	KillTime = 0;
+	waitTillNextShot = reload;
 }
 
 Enemy::~Enemy()
 {
 }
 
-
+bool Enemy::isInReloadPeriod()
+{
+	waitTillNextShot++;
+	return !(waitTillNextShot == reload + 1); //not ready to act
+}
 
 bool Enemy::operator>(Enemy* other)
 {

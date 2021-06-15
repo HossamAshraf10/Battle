@@ -53,15 +53,21 @@ void Healer::Move()
 	}
 }
 
+//public function calls triggers healing others only if not in reload period
 void Healer::Heal(Battle* battle)
 {
+	if (!isInReloadPeriod())
+	{
+		healFighters(battle);
+		healFreezers(battle);
+		healHealers(battle);
 
-	healFighters(battle);
-	healFreezers(battle);
-	healHealers(battle);
 
+		waitTillNextShot = 0; //to wait again till period finishes
+	}
 }
 
+//private function does the healing
 void Healer::_heal(Healer* healer, Enemy* healed)
 {
 	int dist;
@@ -82,7 +88,7 @@ void Healer::_heal(Healer* healer, Enemy* healed)
 		else k3 = 1;
 	}
 	healed->SetHealth(healed->GetHealth()+k1*k2*k3);
-}
+} 
 
 void Healer::healFighters(Battle* battle)
 {

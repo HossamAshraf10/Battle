@@ -29,7 +29,7 @@ void Interactive_mode::Run()
 		pGUI->ResetDrawingList();
 		battle->AddAllListsToDrawingList();
 		pGUI->UpdateInterface(battle->GetCastle()->GetHealth());
-		Sleep(500);
+		pGUI->waitForClick();
 	}
 	
 }

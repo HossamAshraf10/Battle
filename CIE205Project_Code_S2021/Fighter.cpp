@@ -18,20 +18,24 @@ void Fighter::Move()
 	}
 }
 
+
+
 void Fighter::fight(Castle* castle)
 {
-	static double k = 0;
-	static double damage = 0;
-	waitTillNextShot++;
-	if (waitTillNextShot==reload+1)
+	double k = 0;
+	double damage = 0;
+
+	if (!isInReloadPeriod()) //
 	{
 		if (health < 50) k = 0.5;
 		else k = 1;
 
 		damage = k * ((double)power) / Distance;
 		castle->SetHealth(castle->GetHealth() - damage);
-		waitTillNextShot = 0;
+
+		waitTillNextShot = 0; //to wait again till period finishes
 	}
 
+	
 }
 
