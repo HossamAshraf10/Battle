@@ -22,4 +22,9 @@ void Freezer::Move()
 void Freezer::Freeze(Castle* castle)
 {
 
+	if (!isInReloadPeriod())
+	{
+
+		waitTillNextShot = 0;
+	}
 }
