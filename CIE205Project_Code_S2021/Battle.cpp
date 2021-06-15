@@ -414,3 +414,8 @@ int Battle::getNumAlive()
 {
 }
 */
+
+void Battle::LetCastleAttach(int crntTime)
+{
+	BCastle.Fight(this, crntTime);
+}

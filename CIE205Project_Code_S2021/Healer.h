@@ -2,8 +2,9 @@
 #include "Enemies/Enemy.h"
 #include "Battle.h"
 class Battle;
+
 class Healer :
-    public Enemy
+	public Enemy
 {
 private:
 	void healFighters(Battle* battle);

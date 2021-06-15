@@ -11,6 +11,7 @@ void StepByStep_mode::Run()
 
 		move_all_enimies();
 		Act_all_enemies();
+		battle->LetCastleAttach(battle->getCurrentTimeStep());
 
 		//Drawing
 		pGUI->ResetDrawingList();

@@ -1,6 +1,8 @@
 #pragma once
 #include "Enemies/Enemy.h"
-#include "Castle/Castle.h"
+
+class Castle;
+
 class Fighter : public Enemy
 {
 public: 
@@ -11,4 +13,3 @@ public:
 	void Act();
 	void fight(Castle* castle);
 };
-

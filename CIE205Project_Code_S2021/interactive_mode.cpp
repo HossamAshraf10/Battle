@@ -24,6 +24,7 @@ void Interactive_mode::Run()
 		
 		move_all_enimies();
 		Act_all_enemies();
+		battle->GetCastle()->Fight(battle,battle->getCurrentTimeStep());
 
 		//Drawing
 		pGUI->ResetDrawingList();

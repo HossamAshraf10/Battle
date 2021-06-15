@@ -2,12 +2,12 @@
 
 
 Enemy::Enemy(int id, ENMY_TYPE type, int arrTime, double health, int power,
-	int reload, int speed,int distance)
+	int reload, int speed, int distance)
 {
 	SetID(id);
 	SetType(type);
 	SetArrvTime(arrTime);
-	this->maxHealth=health;
+	this->maxHealth = health;
 	SetHealth(health);
 	SetPower(power);
 	SetReload(reload);
@@ -15,9 +15,11 @@ Enemy::Enemy(int id, ENMY_TYPE type, int arrTime, double health, int power,
 	SetDistance(distance);
 	SetStatus(INAC);
 	//
-	FirstShotTime = 0;
-	KillTime = 0;
+	FirstShotTime = -1;
+	KillTime = -1;
+
 	waitTillNextShot = reload;
+
 }
 
 Enemy::~Enemy()

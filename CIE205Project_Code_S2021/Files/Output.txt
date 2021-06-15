@@ -1,6 +1,12 @@
-Game Is Loss
+Game Is WIN!
 KTS	ID	FD	KD	LT	
-Castle Total Damage         = 200
+-1	26	-5	0	-5	
+-1	23	-5	0	-5	
+-1	25	-5	0	-5	
+-1	28	-5	0	-5	
+-1	24	-5	0	-5	
+-1	27	-5	0	-5	
+Castle Total Damage         = 1.4033
 Total Enemies                   = 6
-Average First - Shot Delay = 0
+Average First - Shot Delay = -5
 Average Kill Delay	         = 0
