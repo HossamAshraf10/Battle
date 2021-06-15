@@ -4,7 +4,7 @@ template<class T>
 class PriorityQueue
 {
 private:
-    const static int MAX_SIZE = 15;
+    const static int MAX_SIZE = 300;
     T heap[MAX_SIZE];
     int size;
 public:

@@ -260,6 +260,38 @@ int Battle::getEnemycount()
 	return EnemyCount;
 }
 
+Queue<string>* Battle::StatusBarInformation()
+{
+	int c1,c2,c3,c4;
+	Queue<string>* msgs = new Queue<string>;
+	Queue<int>* tempQ = this->getNumFrznAndKilled();
+
+	string output1 = "";
+	output1 = ("Time Step: " + to_string(CurrentTimeStep)+"          "+"Castle Health: "+ to_string(this->GetCastle()->GetHealth())+"          ");
+	if (this->GetCastle()->isCastleFreezed()) output1 += "Castle Is Freezed";
+	else output1 += "Castle Is Active";
+
+	string output2 = "Active Fighters: "+to_string(getNumActivFighters())+ "        Active Freezers: "+to_string(getNumActivFreezeers())
+		+"        Active Healers"+ to_string(getNumActivHealers()) +"        Active Total"+ to_string(getNumActiveTotal()) ;
+
+
+	tempQ->dequeue(c1), tempQ->dequeue(c2), tempQ->dequeue(c3), tempQ->dequeue(c4);
+	string output3 ="Frozen Fighters: "+to_string(c1)+"        Frozen Freezers: "+to_string(c2)+"        Frozen Healers: "+to_string(c3)+"        Frozen Total: "+to_string(c4);
+
+	tempQ->dequeue(c1), tempQ->dequeue(c2), tempQ->dequeue(c3), tempQ->dequeue(c4);
+	string output4 = "Killed Fighters: " + to_string(c1) + "        Killed Freezers: " + to_string(c2) + "        Killed Healers: " + to_string(c3) + "        Killed Total: " + to_string(c4);
+
+
+	msgs->enqueue(output1),msgs->enqueue(output2),msgs->enqueue(output3),msgs->enqueue(output4);
+	delete tempQ;
+	return msgs;
+
+}
+
+void Battle::LetCastleAttach(int crntTime)
+{
+	BCastle.Fight(this, crntTime);
+}
 
 //functions used to count
 int Battle::getNumActiveTotal()
@@ -269,12 +301,6 @@ int Battle::getNumActiveTotal()
 
 
 
-/*int Battle::getNumFrostedTotal()
-{
-
-	return getNumFrostedFighters() + getNumFrostedHealers() + getNumFrostedFreezeers();
-}
-*/
 int Battle::getNumActivFighters()
 {
 	int totalActive = 0;
@@ -338,84 +364,49 @@ int Battle::getNumActivFreezeers()
 		actv_freezers->enqueue(currentFreezer1);
 	return totalActive;
 }
-/*
-int Battle::getNumFrostedFighters()
-{
-	int totalFrosrted = 0;
-	Fighter* currentFighter;
-	Queue<Fighter*> tempFighters;
 
-	while (!fighters->isEmpty())
+
+
+Queue<int>* Battle::getNumFrznAndKilled()
+{
+	Queue<int>* ints=new Queue<int>;
+	PriorityQueue<Enemy*> frzn;
+	Queue<Enemy*>* temp =new Queue<Enemy*>;
+	Enemy* e;
+	Fighter* fit = nullptr;
+	Freezer* frz = nullptr;
+	Healer* hel = nullptr;
+	int c1, c2, c3, c4, c5, c6, c7, c8;
+	c1 = c2 = c3 = c4 = c5 = c6 = c7 = c8 = 0;
+
+	while (frzn_enms->dequeue(e))
 	{
-		currentFighter = fighters->dequeue();
-		tempFighters.enqueue(currentFighter);
-
+		fit = dynamic_cast<Fighter*>(e);
+		frz = dynamic_cast<Freezer*>(e);
+		hel = dynamic_cast<Healer*>(e);
+		if (fit != nullptr) c1++;
+		if (frz != nullptr) c2++;
+		if (hel != nullptr) c3++;
+		temp->enqueue(e);
 	}
+	while (temp->dequeue(e)) frzn_enms->enqueue(e);
 
-
-	Fighter* currentFighter1;
-	while (!tempFighters.isEmpty())
+	while (kld_enms->dequeue(e))
 	{
-		tempFighters.dequeue(currentFighter1);
-		if (currentFighter->GetStatus() == FRST)
-			totalFrosrted++;
-		fighters->enqueue(currentFighter1);
-
+		fit = dynamic_cast<Fighter*>(e);
+		frz = dynamic_cast<Freezer*>(e);
+		hel = dynamic_cast<Healer*>(e);
+		if (fit != nullptr) c5++;
+		if (frz != nullptr) c6++;
+		if (hel != nullptr) c7++;
+		temp->enqueue(e);
 	}
-	return totalFrosrted;
-}
-
-int Battle::getNumFrostedHealers()
-{
-	int totalFrosrted = 0;
-	ArrayStack<Healer*> tempHealers(100);
-	Healer* currentHealer;
-	while (healers->pop(currentHealer))
-	{
-		if (currentHealer->GetStatus() == FRST)
-			totalFrosrted++;
-		tempHealers.push(currentHealer);
-	}
-
-	Healer* currentHealer1;
-	while (tempHealers.pop(currentHealer1))
-	{
-		healers->push(currentHealer1);
-	}
-	return totalFrosrted;
-
-}
-
-int Battle::getNumFrostedFreezeers()
-{
-	int totalFrosrted = 0;
-	Freezer* currentFreezer;
-	Queue<Freezer*> tempFreezers;
-	while (freezers->dequeue(currentFreezer))
-	{
-		if (currentFreezer->GetStatus() == FRST)
-			totalFrosrted++;
-		tempFreezers.enqueue(currentFreezer);
-
-	}
-	Freezer* currentFreezer1;
-	while (tempFreezers.dequeue(currentFreezer1))
-		freezers->enqueue(currentFreezer1);
-
-	return totalFrosrted;
+	while (temp->dequeue(e)) kld_enms->enqueue(e);
+	c4 = c1 + c2 + c3;
+	c8 = c5 + c6 + c7;
+	ints->enqueue(c1),ints->enqueue(c2),ints->enqueue(c3),ints->enqueue(c4),ints->enqueue(c5),ints->enqueue(c6),ints->enqueue(c7),ints->enqueue(c8);
+	delete temp;
+	return ints;
 }
 
 
-int Battle::getNumKilled()
-{
-
-}
-int Battle::getNumAlive()
-{
-}
-*/
-
-void Battle::LetCastleAttach(int crntTime)
-{
-	BCastle.Fight(this, crntTime);
-}

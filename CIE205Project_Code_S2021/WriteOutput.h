@@ -25,9 +25,10 @@ private:
 	{
 		Queue<Enemy*>* Q_killed = battle->getKilledEnimies();
 		Castle* castle = battle->GetCastle();
+		int totalEnemies = battle->getEnemycount();
+
 		ofstream file;
 		file.open("Files\\Output.txt");
-
 
 		//first line
 		if (castle->GetHealth() > 0.1) file << "Game Is WIN!";
@@ -37,11 +38,13 @@ private:
 		//2nd line
 		file << "KTS\t" << "ID\t" << "FD\t" << "KD\t" << "LT\t" << endl;
 
-		//Enemies (3rd to n-4)
+		//Enemies (3rd to n-4 line)
 		Enemy* enemy;
 		double totalFD, totalKD;
 		int currentFD, currentKD;
 		totalFD = totalKD = currentFD = currentKD = 0;
+		int killed = Q_killed->getSize();
+
 		while (Q_killed->dequeue(enemy))
 		{
 			currentFD = firstShotDelay(enemy);
@@ -58,26 +61,23 @@ private:
 
 
 		//last 4 lines
-		int n = battle->getEnemycount();
 
 		file << "Castle Total Damage         = " << (castle->GetOriginalHealth() - castle->GetHealth()) << endl;
 
-		//hossam revise n and fd and kd
-
-//		if (castle->GetHealth() > 0.1)
-	//	{
-			file << "Total Enemies                   = " << n << endl;
-		//}
-		/*else
+		if (castle->GetHealth() > 0.1) //win
 		{
-			file << "Killed Enemies                  = " << battle->getNumKilled() << endl;
-			file << "Alive Enemies                   = " << battle->getNumAlive() << endl;
-		}*/
+			file << "Total Enemies                   = " << totalEnemies << endl;
+		}
+		else
+		{
+			file << "Killed Enemies                  = " << killed << endl;
+			file << "Alive Enemies                   = " << totalEnemies - killed << endl;
+		}
 
-		file << "Average First - Shot Delay = " << (totalFD / n) << endl;
-		file << "Average Kill Delay	         = " << (totalKD / n) << endl;
-	
 
+
+		file << "Average First - Shot Delay = " << (totalFD / totalEnemies) << endl;
+		file << "Average Kill Delay	         = " << (totalKD / totalEnemies) << endl;
 	}
 public:
 	//once you create an object from this class it will write the output file

@@ -115,9 +115,9 @@ int Castle::AttackFighters(PriorityQueue<Fighter*>* actvFighters, Queue<Enemy*>*
 			tmpQ->enqueue(tmpFighter);
 		else
 		{
-			cout << "Kld: "<<tmpFighter->GetID()<<endl;
 			kld_enms->enqueue(tmpFighter);
 			tmpFighter->SetStatus(KILD);
+			tmpFighter->SetKillTime(crntTime);
 		}
 			
 
@@ -176,9 +176,9 @@ int Castle::AttachHealers(ArrayStack<Healer*>* healers, Queue<Enemy*>* kld_enms,
 			tmpH->push(tmpHealer);
 		else
 		{
-			cout << "Kld: " << tmpHealer->GetID() << endl;
 			kld_enms->enqueue(tmpHealer);
 			tmpHealer->SetStatus(KILD);
+			tmpHealer->SetKillTime(crntTime);
 
 		}
 	}
@@ -213,6 +213,8 @@ int Castle::AttackFrozen(Queue<Freezer*>* actv_freezers, Queue<Enemy*>* kld_enms
 			kld_enms->enqueue(tmpFreezer);
 			//kld_enms->enqueue(tmpFreezer);
 			tmpFreezer->SetStatus(KILD);
+			tmpFreezer->SetKillTime(crntTime);
+
 		}
 	}
 	//reverse
@@ -227,6 +229,6 @@ int Castle::AttackFrozen(Queue<Freezer*>* actv_freezers, Queue<Enemy*>* kld_enms
 
 void Castle::setFirstShotTime(Enemy* enmy, int curntTIme)
 {
-	if (enmy->GetFirstShotTime() != -1)
+	if (enmy->GetFirstShotTime() == -1)
 		enmy->SetFirstShotTime(curntTIme);
 }

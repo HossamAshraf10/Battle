@@ -60,7 +60,6 @@ public:
 	void RunSimulation();
 	void ActivateEnemies();		//check the inactive list and activate all enemies that has arrived
 
-	void AddtoDemoList(Enemy* Ptr);		//Add Enemy to the demo queue of enemies (for demo purposes only)
 	
 
 	//Getter and setter for main components; will be needed in battle_state
@@ -77,7 +76,9 @@ public:
 	int getCurrentTimeStep();
 	int getEnemycount();
 
+	Queue<string>* StatusBarInformation();
 
+	void LetCastleAttach(int crntTime);
 	// function to count
 
 	int getNumActivFighters();
@@ -85,15 +86,13 @@ public:
 	int getNumActivFreezeers();
 	int getNumActiveTotal();
 
+	Queue<int>* getNumFrznAndKilled();
+	
+	/*
 	int getNumFrostedFighters();
 	int getNumFrostedHealers();
 	int getNumFrostedFreezeers();
-	int getNumFrostedTotal();
-
-	int getNumKilled();
-	int getNumAlive();
-
-	void LetCastleAttach(int crntTime);
+	int getNumFrostedTotal()*/
 };
 
 #endif // ! BATTLE
