@@ -30,7 +30,7 @@ class Castle
 	int AttackFighters(PriorityQueue<Fighter*>*, Queue<Enemy*>* kld_enms, int max, int crntTime);
 	int AttackFrozenFighters(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>* kld_enms, int max, int crntTime, int alreadyKld);
 	bool IsWorthFighterAttack(Fighter* fighter, ENMY_STATUS status);
-	double GetDamagetToFighter(Fighter* fighter);
+	double GetDamagetToHealers(Healer* fighter);
 	int GetDamagetToOthers(Enemy* fighter);
 	int AttachHealers(ArrayStack<Healer*>*, Queue<Enemy*>* kld_enms, int max, int crntTime,  int alreadyKld);
 	int AttachFrozenHealers(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>* kld_enms, int max, int crntTime,  int alreadyKld);
@@ -67,8 +67,10 @@ public:
 
 	
 	bool isCastleFreezed();
+	void UnfreezeCastle();
 	double getAccumulatedIce();
 	void accumulateIce(double ice);
+
 	//void Fight(Battle* battle);
 
 	
