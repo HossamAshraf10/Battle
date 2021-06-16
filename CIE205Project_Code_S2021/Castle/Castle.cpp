@@ -192,7 +192,7 @@ void Castle::UnfreezeEnms(Battle* battle, int curntTime)
 		tmpFrzn->dequeue(tmpEmy);
 		battle->getFrzonEnimies()->enqueue(tmpEmy);
 	}
-
+	delete tmpFrzn;
 }
 
 
@@ -218,7 +218,6 @@ int Castle::AttackFighters(PriorityQueue<Fighter*>* actvFighters, Queue<Enemy*>*
 		}
 		else
 		{
-			cout << "Kld: " << tmpFighter->GetID() << endl;
 			kld_enms->enqueue(tmpFighter);
 			tmpFighter->SetStatus(KILD);
 			tmpFighter->SetKillTime(crntTime);
@@ -234,7 +233,7 @@ int Castle::AttackFighters(PriorityQueue<Fighter*>* actvFighters, Queue<Enemy*>*
 		actvFighters->enqueue(tmpFighter);
 
 	}
-
+	delete tmpQ;
 	return totalAttacked;
 }
 
@@ -264,7 +263,6 @@ int Castle::AttackFrozenFighters(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>
 			}
 			else
 			{
-				cout << "Kld: " << fighter->GetID() << endl;
 				kld_enms->enqueue(fighter);
 				fighter->SetStatus(KILD);
 				fighter->SetKillTime(crntTime);
@@ -288,6 +286,7 @@ int Castle::AttackFrozenFighters(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>
 		frzn_enms->enqueue(tmpEnmy);
 
 	}
+	delete tmpFrzns;
 	return totalAttacked;
 }
 
@@ -336,7 +335,6 @@ int Castle::AttachHealers(ArrayStack<Healer*>* healers, Queue<Enemy*>* kld_enms,
 		}
 		else
 		{
-			cout << "Kld: " << tmpHealer->GetID() << endl;
 			kld_enms->enqueue(tmpHealer);
 			tmpHealer->SetStatus(KILD);
 			tmpHealer->SetKillTime(crntTime);
@@ -351,6 +349,7 @@ int Castle::AttachHealers(ArrayStack<Healer*>* healers, Queue<Enemy*>* kld_enms,
 		tmpH->pop(tmpHealer);
 		healers->push(tmpHealer);
 	}
+	delete tmpH;
 	return totalAttacked;
 }
 
@@ -381,7 +380,6 @@ int Castle::AttachFrozenHealers(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>*
 			}
 			else
 			{
-				cout << "Kld: " << healer->GetID() << endl;
 				kld_enms->enqueue(healer);
 				healer->SetStatus(KILD);
 				healer->SetKillTime(crntTime);
@@ -405,6 +403,7 @@ int Castle::AttachFrozenHealers(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>*
 		frzn_enms->enqueue(tmpEnmy);
 
 	}
+	delete tmpFrzns;
 	return totalAttacked;
 
 }
@@ -443,6 +442,7 @@ int Castle::AttackFrozen(Queue<Freezer*>* actv_freezers, Queue<Enemy*>* kld_enms
 		tmpF->dequeue(tmpFreezer);
 		actv_freezers->enqueue(tmpFreezer);
 	}
+	delete tmpF;
 	return totalAttacked;
 }
 
@@ -473,7 +473,6 @@ int Castle::AttackFrozednFrozen(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>*
 			}
 			else
 			{
-				cout << "Kld: " << freezer->GetID() << endl;
 				kld_enms->enqueue(freezer);
 				freezer->SetStatus(KILD);
 				freezer->SetKillTime(crntTime);
@@ -497,6 +496,7 @@ int Castle::AttackFrozednFrozen(PriorityQueue<Enemy*>* frzn_enms, Queue<Enemy*>*
 		frzn_enms->enqueue(tmpEnmy);
 
 	}
+	delete tmpFrzns;
 	return totalAttacked;
 
 }
@@ -531,7 +531,6 @@ int Castle::AttackFightersByIce(PriorityQueue<Fighter*>* actvFighters, PriorityQ
 		}
 		else
 		{
-			cout << "Frozen: " << tmpFighter->GetID() << endl;
 			tmpQ->enqueue(tmpFighter);
 
 		}
@@ -545,7 +544,7 @@ int Castle::AttackFightersByIce(PriorityQueue<Fighter*>* actvFighters, PriorityQ
 		actvFighters->enqueue(tmpFighter);
 
 	}
-
+	delete tmpQ;
 	return totalAttacked;
 }
 
@@ -573,7 +572,6 @@ int Castle::AttachHealersByIce(ArrayStack<Healer*>* healers, PriorityQueue<Enemy
 		}
 		else
 		{
-			cout << "Frozen: " << tmpHealer->GetID() << endl;
 			tmpH->push(tmpHealer);
 
 		}
@@ -585,6 +583,7 @@ int Castle::AttachHealersByIce(ArrayStack<Healer*>* healers, PriorityQueue<Enemy
 		tmpH->pop(tmpHealer);
 		healers->push(tmpHealer);
 	}
+	delete tmpH;
 	return totalAttacked;
 }
 
@@ -611,7 +610,6 @@ int Castle::AttackFrozenByIce(Queue<Freezer*>* actv_freezers, PriorityQueue<Enem
 		}
 		else
 		{
-			cout << "Frozen: " << tmpFreezer->GetID() << endl;
 			tmpF->enqueue(tmpFreezer);
 		}
 
@@ -623,6 +621,7 @@ int Castle::AttackFrozenByIce(Queue<Freezer*>* actv_freezers, PriorityQueue<Enem
 		tmpF->dequeue(tmpFreezer);
 		actv_freezers->enqueue(tmpFreezer);
 	}
+	delete tmpF;
 	return totalAttacked;
 }
 

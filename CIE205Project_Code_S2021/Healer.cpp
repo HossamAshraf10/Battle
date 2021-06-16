@@ -13,7 +13,11 @@ void Healer::Move()
 				SetDistance(2 * MinDistance + speed / 2 - Distance);
 				towardsCastle = false;
 			}
-			else SetDistance(Distance - speed / 2);
+			else
+			{
+				if (speed / 2 == 0) SetDistance(Distance - 1);
+				else SetDistance(Distance - speed / 2);
+			}
 		}
 
 		else //healthy
@@ -82,10 +86,10 @@ void Healer::_heal(Healer* healer, Enemy* healed)
 		if (healed->GetHealth() <= 50) k1 = 0.5;
 		else k1 = 1;
 
-		if (healer->GetHealth() <= 50) k2 = 0.5;
-		else k2 = 1;
+		if (healer->GetHealth() <= 50) k2 = 0.25;
+		else k2 = 0.5;
     
-		if (dist == 0) k3 = 2;
+		if (dist == 0) k3 = 1;
 		else if (dist == 1 || dist == -1) k3 = 1.5;
 		else k3 = 1;
 		healed->SetHealth(healed->GetHealth() + k1 * k2 * k3 * k4);

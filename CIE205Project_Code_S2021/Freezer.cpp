@@ -10,7 +10,11 @@ void Freezer::Move()
 		if (health <= 50) //not healthy
 		{
 			if (Distance - speed / 2 < MinDistance) SetDistance(MinDistance);
-			else SetDistance(Distance - speed / 2);
+			else
+			{
+				if (speed / 2 == 0) SetDistance(Distance - 1);
+				else SetDistance(Distance - speed / 2);
+			}
 		}
 		else //healthy 
 		{
@@ -36,6 +40,5 @@ void Freezer::Freeze(Castle* castle)
 		castle->accumulateIce(ice);
 
 		waitTillNextShot = 0; //to wait again till period finishes
-		cout << ice << " oacc: " << castle->getAccumulatedIce();
 	}
 }
