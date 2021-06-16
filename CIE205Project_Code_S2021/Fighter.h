@@ -1,7 +1,9 @@
 #pragma once
 #include "Enemies/Enemy.h"
 
+
 class Castle;
+class superSoliders;
 
 class Fighter : public Enemy
 {
@@ -10,6 +12,7 @@ public:
 		int reload, int speed) : Enemy(id, type, arrTime, health, power, reload, speed) {}
 
 	void Move();
-	void Act();
+	//void Act();
 	void fight(Castle* castle);
+	void fightSuper(superSoliders* superSolider);
 };

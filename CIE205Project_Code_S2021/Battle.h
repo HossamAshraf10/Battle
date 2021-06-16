@@ -12,6 +12,8 @@
 #include "Freezer.h"
 #include "GUI\GUI.h"
 #include "Battle_mode.h"
+#include "Castle/SuperSoliders.h"
+
 // it is the controller of the project
 class Battle_mode;
 class Healer;
@@ -36,8 +38,9 @@ private:
 	Queue<Freezer*>* actv_freezers;
 	PriorityQueue<Enemy*>* frzn_enms;
 	Queue<Enemy*>* kld_enms;
-
+	ArrayStack<superSoliders*>* actv_SuperSoliders;
 	Battle_mode* crnt_mode;
+	bool isSuperNeededd;
 	/// ==> 
 	//	DEMO-related members. Should be removed in phases 1&2
 	//Queue for all enemies in the battle
@@ -59,6 +62,10 @@ public:
 	void setNumberOfEnemies(int);
 	void RunSimulation();
 	void ActivateEnemies();		//check the inactive list and activate all enemies that has arrived
+	//BONUS
+	void ActivateSuperSoliders(superSoliders* superSolider,int ID, int power, int arrTime, int reloadTime, int speed, double maxHealth);
+	int getMaxEnemDistance();
+	ArrayStack<superSoliders*>* getSupersoliders();
 
 	void AddtoDemoList(Enemy* Ptr);		//Add Enemy to the demo queue of enemies (for demo purposes only)
 	
@@ -85,6 +92,11 @@ public:
 	int getNumActivFreezeers();
 	int getNumActiveTotal();
 
+	int getNumActivFightersAtDist(int distance);
+	int getNumActivHealersAtDist(int distance);
+	int getNumActivFreezeersAtDist(int distance);
+	int getNumActivTotalAtDist(int distance);
+
 	int getNumFrostedFighters();
 	int getNumFrostedHealers();
 	int getNumFrostedFreezeers();
@@ -94,6 +106,7 @@ public:
 	int getNumAlive();
 
 	void LetCastleAttach(int crntTime);
+	bool isSuperNeeded();
 };
 
 #endif // ! BATTLE

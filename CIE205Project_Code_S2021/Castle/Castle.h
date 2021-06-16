@@ -57,6 +57,7 @@ public:
 	
 	void Fight(Battle* battle, int curntTime);
 
+	
 
 };
 

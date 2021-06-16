@@ -16,12 +16,14 @@ Battle::Battle()
 	FrostedCount = 0;
 	DemoListCount = 0;
 	CurrentTimeStep = 0;
+	this->isSuperNeededd = false;
 	pGUI = new GUI;
 	actv_fighters = new PriorityQueue<Fighter*>();
 	actv_healers = new ArrayStack<Healer*>(100);
 	actv_freezers = new Queue<Freezer*>;
 	frzn_enms = new PriorityQueue<Enemy*>;
 	kld_enms = new Queue<Enemy*>;
+	actv_SuperSoliders = new ArrayStack<superSoliders*>(3);
 }
 
 Castle * Battle::GetCastle()
@@ -172,8 +174,22 @@ void Battle::AddAllListsToDrawingList()
 		kld_enms->enqueue(currentKldEnemyBack);
 
 	}
+	//////////////////////Super Soliders//////////////////////
+	superSoliders* superDraw;
+	Queue<superSoliders*> tempSuperDraw;
+	while (!actv_SuperSoliders->isEmpty())
+	{
+		actv_SuperSoliders->pop(superDraw);
+		pGUI->AddToDrawingList(superDraw);
+		tempSuperDraw.enqueue(superDraw);
+	}
 
-
+	superSoliders* currentSuperSolider;
+	while (!tempFighters.isEmpty())
+	{
+		tempSuperDraw.dequeue(currentSuperSolider);
+		actv_SuperSoliders->push(currentSuperSolider);
+	}
 }
 
 //check the inactive list and activate all enemies that has arrived
@@ -206,6 +222,26 @@ void Battle::ActivateEnemies()
 
 		}
 
+	}
+}
+
+// Super solider activaton
+void Battle::ActivateSuperSoliders(superSoliders* superSolider, int ID, int power, int arrTime, int reloadTime, int speed, double maxHealth)
+{
+	if (isSuperNeeded())
+	{
+		superSolider->setID(ID);
+		superSolider->setPower(power); superSolider->setArrTime(getCurrentTimeStep()); superSolider->setReload(reloadTime);
+		superSolider->setSpeed(speed); superSolider->setHealth(maxHealth);
+		actv_SuperSoliders->push(superSolider);
+		superSolider->setDistance(MinDistance);
+		int initialDist = 2;
+		int finalDistance = getMaxEnemDistance();
+		//
+		for (int dist = 2; dist <= finalDistance; dist++)
+		{
+			superSolider->setDistance(dist);
+		}
 	}
 }
 
@@ -300,6 +336,33 @@ int Battle::getNumActivFighters()
 	}
 	return totalActive;
 }
+//
+int Battle::getNumActivFightersAtDist(int distance)
+{
+	int totalActive = 0;
+	Fighter* currentFighter;
+	Queue<Fighter*> tempFighters;
+
+	while (!actv_fighters->isEmpty())
+	{
+		currentFighter = actv_fighters->dequeue();
+		if (currentFighter->GetDistance() == distance)
+		{
+			tempFighters.enqueue(currentFighter);
+		}
+	}
+
+	Fighter* currentFighter1;
+	while (!tempFighters.isEmpty())
+	{
+		tempFighters.dequeue(currentFighter1);
+		if (currentFighter->GetStatus() == ACTV)
+			totalActive++;
+		actv_fighters->enqueue(currentFighter1);
+	}
+	return totalActive;
+}
+
 
 int Battle::getNumActivHealers()
 {
@@ -320,7 +383,46 @@ int Battle::getNumActivHealers()
 	}
 	return totalActive;
 }
+//
+int Battle::getNumActivHealersAtDist(int distance)
+{
+	int totalActive = 0;
+	ArrayStack<Healer*> tempHealers(100);
+	Healer* currentHealer;
 
+	while (actv_healers->pop(currentHealer))
+	{
+		if (currentHealer->GetStatus() == ACTV && currentHealer->GetDistance() == distance)
+			totalActive++;
+		tempHealers.push(currentHealer);
+	}
+
+	Healer* currentHealer1;
+	while (tempHealers.pop(currentHealer1))
+	{
+		actv_healers->push(currentHealer1);
+	}
+	return totalActive;
+}
+
+int Battle::getNumActivFreezeersAtDist(int distance)
+{
+	int totalActive = 0;
+	Freezer* currentFreezer;
+	Queue<Freezer*> tempFreezers;
+	while (actv_freezers->dequeue(currentFreezer))
+	{
+		if (currentFreezer->GetStatus() == ACTV && currentFreezer->GetDistance() == distance)
+			totalActive++;
+		tempFreezers.enqueue(currentFreezer);
+
+	}
+	Freezer* currentFreezer1;
+	while (tempFreezers.dequeue(currentFreezer1))
+		actv_freezers->enqueue(currentFreezer1);
+	return totalActive;
+}
+//
 int Battle::getNumActivFreezeers()
 {
 	int totalActive = 0;
@@ -337,6 +439,11 @@ int Battle::getNumActivFreezeers()
 	while (tempFreezers.dequeue(currentFreezer1))
 		actv_freezers->enqueue(currentFreezer1);
 	return totalActive;
+}
+///////
+int Battle::getNumActivTotalAtDist(int distance)
+{
+	return getNumActivFightersAtDist(distance) + getNumActivHealersAtDist(distance) + getNumActivFreezeersAtDist(distance);
 }
 /*
 int Battle::getNumFrostedFighters()
@@ -418,4 +525,36 @@ int Battle::getNumAlive()
 void Battle::LetCastleAttach(int crntTime)
 {
 	BCastle.Fight(this, crntTime);
+}
+
+//Bonus
+int Battle::getMaxEnemDistance() 
+{
+	int distance;
+	int finalDistance=0;
+	for (distance = MinDistance; distance < MaxDistance; distance++)
+	{
+		for (int j = MinDistance; j < MaxDistance; j++)
+		{
+			if (getNumActivFightersAtDist(distance) > getNumActivFightersAtDist(j))
+			{
+				finalDistance = distance;
+			}
+		}
+	}
+	return finalDistance;
+}
+
+ArrayStack<superSoliders*>* Battle::getSupersoliders()
+{
+	return actv_SuperSoliders;
+}
+bool Battle::isSuperNeeded()
+{
+	if (GetCastle()->GetHealth() < 100)
+	{
+		isSuperNeededd = true;
+		return true;
+	}
+	return false;
 }

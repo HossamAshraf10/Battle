@@ -1,5 +1,6 @@
 #include "Fighter.h"
 #include "Castle/Castle.h"
+#include "Castle/SuperSoliders.h"
 
 void Fighter::Move()
 {
@@ -38,5 +39,18 @@ void Fighter::fight(Castle* castle)
 		waitTillNextShot = 0; //to wait again till period finishes
 	}
 
+}
 
+void Fighter::fightSuper(superSoliders* superSolider)
+{
+	double k = 0; double damage =0;
+	if (!isInReloadPeriod())
+	{
+		if (health < 50) k = 0.5;
+		else k = 1;
+		damage = k * ((double)power) * 0.5;
+		superSolider->setHealth(superSolider->getHealth() - damage);
+
+		waitTillNextShot = 0;
+	}
 }

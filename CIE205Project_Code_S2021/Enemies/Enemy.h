@@ -2,6 +2,7 @@
 
 #include "..\Defs.h"
 #include "..\CMUgraphicsLib\CMUgraphics.h"
+//#include "..\Castle\SuperSoliders.h"
 
 class GUI;
 // Enemy is the base class of each type of enemy
