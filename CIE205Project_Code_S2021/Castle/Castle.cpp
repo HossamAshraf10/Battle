@@ -22,6 +22,8 @@ Castle::Castle(double Health, int N, double power)
 	this->Health = Health;
 	this->N = N;
 	this->power = power;
+	this->accumulatedIce = 0;
+	IceThreshold = originalHealth / 4;
 }
 
 void Castle::SetHealth(double h)
@@ -118,13 +120,13 @@ void Castle::FightBullets(Battle* battle, int curntTime)
 void Castle::FightIce(Battle* battle, int curntTime)
 {
 	int numAttacked = 0;
-	numAttacked += AttackFightersByIce(battle->getActvFighters(), battle->getFrzonEnimies(), N, curntTime, numAttacked);
+	numAttacked += AttackFightersByIce(battle->getActvFighters(), battle->getFrzonEnimies(), N-1, curntTime, numAttacked);
 	if (numAttacked < N)
 		//Attack healers
-		numAttacked += AttachHealersByIce(battle->getActvHealers(), battle->getFrzonEnimies(), N, curntTime, numAttacked);
+		numAttacked += AttachHealersByIce(battle->getActvHealers(), battle->getFrzonEnimies(), N-1, curntTime, numAttacked);
 	if (numAttacked < N)
 		//Attack freezers
-		AttackFrozen(battle->getActvFreezers(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+		AttackFrozen(battle->getActvFreezers(), battle->getKilledEnimies(), N-1, curntTime, numAttacked);
 }
 
 /*

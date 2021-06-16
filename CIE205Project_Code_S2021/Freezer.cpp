@@ -20,7 +20,8 @@ void Freezer::Move()
 	}
 }
 
-
+#include <iostream>
+using namespace std;
 void Freezer::Freeze(Castle* castle)
 {
 	double k = 0;
@@ -35,5 +36,6 @@ void Freezer::Freeze(Castle* castle)
 		castle->accumulateIce(ice);
 
 		waitTillNextShot = 0; //to wait again till period finishes
+		cout << ice << " oacc: " << castle->getAccumulatedIce();
 	}
 }
