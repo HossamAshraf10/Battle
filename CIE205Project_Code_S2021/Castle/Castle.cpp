@@ -98,21 +98,21 @@ void Castle::Fight(Battle* battle, int curntTime)
 void Castle::FightBullets(Battle* battle, int curntTime)
 {
 	int numAttacked = 0;
-	numAttacked += AttackFighters(battle->getActvFighters(), battle->getKilledEnimies(), N, curntTime);
+	numAttacked += AttackFighters(battle->getActvFighters(), battle->getKilledEnimies(), N-1, curntTime);
 	if (numAttacked < N)
-		numAttacked += AttackFrozenFighters(battle->getFrzonEnimies(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+		numAttacked += AttackFrozenFighters(battle->getFrzonEnimies(), battle->getKilledEnimies(), N-1, curntTime, numAttacked);
 
 	//Attack healers
 	if (numAttacked < N)
-		numAttacked += AttachHealers(battle->getActvHealers(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+		numAttacked += AttachHealers(battle->getActvHealers(), battle->getKilledEnimies(), N-1, curntTime, numAttacked);
 	if (numAttacked < N)
-		numAttacked += AttachFrozenHealers(battle->getFrzonEnimies(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+		numAttacked += AttachFrozenHealers(battle->getFrzonEnimies(), battle->getKilledEnimies(), N-1, curntTime, numAttacked);
 
 	//Attack freezers
 	if (numAttacked < N)
-		AttackFrozen(battle->getActvFreezers(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+		AttackFrozen(battle->getActvFreezers(), battle->getKilledEnimies(), N-1, curntTime, numAttacked);
 	if (numAttacked < N)
-		numAttacked += AttackFrozednFrozen(battle->getFrzonEnimies(), battle->getKilledEnimies(), N, curntTime, numAttacked);
+		numAttacked += AttackFrozednFrozen(battle->getFrzonEnimies(), battle->getKilledEnimies(), N-1, curntTime, numAttacked);
 }
 
 void Castle::FightIce(Battle* battle, int curntTime)
