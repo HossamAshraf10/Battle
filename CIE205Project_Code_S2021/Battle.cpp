@@ -323,12 +323,12 @@ Queue<string>* Battle::StatusBarInformation()
 	return msgs;
 
 }
-
+/*
 void Battle::LetCastleAttach(int crntTime)
 {
 	BCastle.Fight(this, crntTime);
 }
-
+*/
 //functions used to count
 int Battle::getNumActiveTotal()
 {
@@ -477,14 +477,14 @@ int Battle::getNumFrostedFighters()
 	int totalFrosrted = 0;
 	Fighter* currentFighter;
 	Queue<Fighter*> tempFighters;
-
+*/
 
 
 Queue<int>* Battle::getNumFrznAndKilled()
 {
-	Queue<int>* ints=new Queue<int>;
+	Queue<int>* ints = new Queue<int>;
 	PriorityQueue<Enemy*> frzn;
-	Queue<Enemy*>* temp =new Queue<Enemy*>;
+	Queue<Enemy*>* temp = new Queue<Enemy*>;
 	Enemy* e;
 	Fighter* fit = nullptr;
 	Freezer* frz = nullptr;
@@ -517,12 +517,12 @@ Queue<int>* Battle::getNumFrznAndKilled()
 	while (temp->dequeue(e)) kld_enms->enqueue(e);
 	c4 = c1 + c2 + c3;
 	c8 = c5 + c6 + c7;
-	ints->enqueue(c1),ints->enqueue(c2),ints->enqueue(c3),ints->enqueue(c4),ints->enqueue(c5),ints->enqueue(c6),ints->enqueue(c7),ints->enqueue(c8);
+	ints->enqueue(c1), ints->enqueue(c2), ints->enqueue(c3), ints->enqueue(c4), ints->enqueue(c5), ints->enqueue(c6), ints->enqueue(c7), ints->enqueue(c8);
 	delete temp;
 	return ints;
 }
 
-
+/*
 int Battle::getNumKilled()
 {
 

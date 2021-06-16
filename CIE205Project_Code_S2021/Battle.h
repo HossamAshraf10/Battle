@@ -110,7 +110,7 @@ public:
 	int getNumKilled();
 	int getNumAlive();
 
-	void LetCastleAttach(int crntTime);
+	//void LetCastleAttach(int crntTime);
 	bool isSuperNeeded();
 
 };
