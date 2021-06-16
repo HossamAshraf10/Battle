@@ -91,7 +91,7 @@ private:
 
 	void read(Battle* pBattle)
 	{
-		ifstream file("Files\\The Input.txt");
+		ifstream file("Files\\xinput6.txt");
 		if (!file) cout << "Error! failed to open input file";
 
 

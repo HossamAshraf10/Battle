@@ -332,7 +332,6 @@ void GUI::AddToDrawingList(Enemy* pE)
 	if (pFight != NULL) eType = 0;
 	else if (pHealer != NULL) eType = 1;
 	else if (pFreezer != NULL) eType = 2;
-	//cout << eType << endl;
 	pDitem->clr = DrawingColors[eType];
 	/////////////
 	/////////////

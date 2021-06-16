@@ -9,7 +9,11 @@ void Fighter::Move()
 		if (health <= 50) //not healthy
 		{
 			if (Distance - speed / 2 < MinDistance) SetDistance(MinDistance);
-			else SetDistance(Distance - speed / 2);
+			else
+			{
+				if (speed / 2 == 0) SetDistance(Distance - 1);
+				else SetDistance(Distance - speed / 2);
+			}
 		}
 		else //healthy
 		{
