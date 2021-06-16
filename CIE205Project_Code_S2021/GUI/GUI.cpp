@@ -4,6 +4,7 @@
 #include "../Fighter.h"
 #include "../Freezer.h"
 #include "../Healer.h"
+#include "..\Castle\SuperSoliders.h"
 #include <iostream>
 using namespace std;
 //////////////////////////////////////////////////////////////////////////////////////////
@@ -338,6 +339,42 @@ void GUI::AddToDrawingList(Enemy* pE)
 
 	DrawingList[DrawingItemsCount++] = pDitem;	//add item to the list
 }
+
+void GUI::AddToDrawingList(superSoliders* pE)
+{
+	DrawingItem* pDitem = new DrawingItem;
+	pDitem->ID = pE->getID();
+	pDitem->distance = pE->getDistnce();
+
+	if (pE->getHealth() > 0)
+	{
+		pDitem->region = (GUI_REGION)(ACTV);	//map status to drawing region	
+	}
+	else
+	{
+		pDitem->region = (GUI_REGION)(KILD);
+	}
+	// IMPORTANT [TO DO]
+	// enemy type has been generated randomly here because enemy classes are not written yet
+	// in next phases, to know enemy type, you should apply dynamic_cast to pE pointer
+	/*
+	Fighter* pFight = dynamic_cast<Fighter*>(pE);
+	Healer* pHealer = dynamic_cast<Healer*>(pE);
+	Freezer* pFreezer = dynamic_cast<Freezer*>(pE);
+	int eType;
+	if (pFight != NULL) eType = 0;
+	else if (pHealer != NULL) eType = 1;
+	else if (pFreezer != NULL) eType = 2;
+	*/
+	int eType = 3;
+	cout << eType << endl;
+	pDitem->clr = DrawingColors[eType];
+	/////////////
+	/////////////
+
+	DrawingList[DrawingItemsCount++] = pDitem;	//add item to the list
+}
+
 
 
 void GUI::ResetDrawingList()

@@ -128,6 +128,7 @@
     <ClCompile Include="Battle.cpp" />
     <ClCompile Include="Battle_mode.cpp" />
     <ClCompile Include="Castle\Castle.cpp" />
+    <ClCompile Include="Castle\SuperSoliders.cpp" />
     <ClCompile Include="CMUgraphicsLib\auxil.cpp">
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -283,6 +284,7 @@
     <ClInclude Include="Battle.h" />
     <ClInclude Include="Battle_mode.h" />
     <ClInclude Include="Castle\Castle.h" />
+    <ClInclude Include="Castle\SuperSoliders.h" />
     <ClInclude Include="CMUgraphicsLib\auxil.h" />
     <ClInclude Include="CMUgraphicsLib\CMUgraphics.h" />
     <ClInclude Include="CMUgraphicsLib\colors.h" />

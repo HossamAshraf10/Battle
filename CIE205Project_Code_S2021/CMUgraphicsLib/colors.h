@@ -13,8 +13,8 @@ class color {
   public:
 
     // Default constructor creates black
-    color(unsigned char Red = 0, unsigned char Green = 0, unsigned char Blue = 0) { 
-        ucRed = Red;  ucGreen = Green;  ucBlue = Blue; 
+    color(unsigned char Red = 0, unsigned char Green = 0, unsigned char Blue = 0, unsigned char Black =0) { 
+        ucRed = Red;  ucGreen = Green;  ucBlue = Blue; ucBlack = Black;
     }
 
 
@@ -22,6 +22,7 @@ class color {
     unsigned char ucRed;
     unsigned char ucGreen;
     unsigned char ucBlue;
+    unsigned char ucBlack;
 
 };
 

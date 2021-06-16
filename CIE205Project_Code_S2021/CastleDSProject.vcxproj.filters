@@ -167,6 +167,9 @@
     <ClCompile Include="StepByStep_mode.cpp">
       <Filter>Modes</Filter>
     </ClCompile>
+    <ClCompile Include="Castle\SuperSoliders.cpp">
+      <Filter>Castle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CMUgraphicsLib\auxil.h">
@@ -281,6 +284,9 @@
     </ClInclude>
     <ClInclude Include="WriteOutput.h">
       <Filter>I/O classes</Filter>
+    </ClInclude>
+    <ClInclude Include="Castle\SuperSoliders.h">
+      <Filter>Castle</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

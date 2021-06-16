@@ -12,6 +12,8 @@
 #include "Freezer.h"
 #include "GUI\GUI.h"
 #include "Battle_mode.h"
+#include "Castle/SuperSoliders.h"
+
 // it is the controller of the project
 class Battle_mode;
 class Healer;
@@ -24,10 +26,10 @@ private:
 	int ActiveCount, FrostedCount, KilledCount;	//no. of enemies (Active, Frosted, killed so far)
 	int CurrentTimeStep;
 	//Enemy * BEnemiesForDraw[MaxEnemyCount]; // This Array of Pointers is used for drawing elements in the GUI
-								  			  // No matter what list type you are using to hold enemies, 
-											  // you must pass the enemies to the GUI function as an array of enemy pointers. 
-											  // At every time step, you should update those pointers 
-											  // to point to the current active enemies 
+								  			  // No matter what list type you are using to hold enemies,
+											  // you must pass the enemies to the GUI function as an array of enemy pointers.
+											  // At every time step, you should update those pointers
+											  // to point to the current active enemies
 											  // then pass the pointers list to the GUI function
 
 	Queue<Enemy*>* inactive;		//Queue of inactive enemies
@@ -36,9 +38,10 @@ private:
 	Queue<Freezer*>* actv_freezers;
 	PriorityQueue<Enemy*>* frzn_enms;
 	Queue<Enemy*>* kld_enms;
-
+	ArrayStack<superSoliders*>* actv_SuperSoliders;
 	Battle_mode* crnt_mode;
-	/// ==> 
+	bool isSuperNeededd;
+	/// ==>
 	//	DEMO-related members. Should be removed in phases 1&2
 	//Queue for all enemies in the battle
 	int DemoListCount;
@@ -50,7 +53,7 @@ private:
 	//
 
 public:
-	
+
 	Battle();
 	void AddAllListsToDrawingList();		//Add enemy lists (inactive, active,.....) to drawing list to be displayed on user interface
 	Castle * GetCastle();
@@ -59,8 +62,12 @@ public:
 	void setNumberOfEnemies(int);
 	void RunSimulation();
 	void ActivateEnemies();		//check the inactive list and activate all enemies that has arrived
+	//BONUS
+	void ActivateSuperSoliders(superSoliders* superSolider,int ID, int power, int arrTime, int reloadTime, int speed, double maxHealth);
+	int getMaxEnemDistance();
+	ArrayStack<superSoliders*>* getSupersoliders();
 
-	
+
 
 	//Getter and setter for main components; will be needed in battle_state
 	Queue<Enemy*>* getInactive();
@@ -86,13 +93,26 @@ public:
 	int getNumActivFreezeers();
 	int getNumActiveTotal();
 
+
 	Queue<int>* getNumFrznAndKilled();
-	
-	/*
+
+
+	int getNumActivFightersAtDist(int distance);
+	int getNumActivHealersAtDist(int distance);
+	int getNumActivFreezeersAtDist(int distance);
+	int getNumActivTotalAtDist(int distance);
+
 	int getNumFrostedFighters();
 	int getNumFrostedHealers();
 	int getNumFrostedFreezeers();
-	int getNumFrostedTotal()*/
+	int getNumFrostedTotal();
+
+	int getNumKilled();
+	int getNumAlive();
+
+	void LetCastleAttach(int crntTime);
+	bool isSuperNeeded();
+
 };
 
 #endif // ! BATTLE

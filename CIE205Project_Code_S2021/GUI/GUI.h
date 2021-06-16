@@ -5,6 +5,7 @@
 #include "..\Defs.h"
 
 #include "..\Enemies\Enemy.h"
+#include"..\Castle\SuperSoliders.h"
 
 #include "..\Generic_DS\Queue.h"
 
@@ -106,6 +107,7 @@ public:
 	void UpdateInterface(string txt);
 	void UpdateInterface(Queue<string>* msgs);
 	void AddToDrawingList(Enemy*);	//Adds a new enemy to the drawing queue
+	void AddToDrawingList(superSoliders*);	//Adds a new enemy to the drawing queue
 	void ResetDrawingList();		//resets drawing list (should be called every timestep after drawing)
 	PROG_MODE getGUIMode() const;			//returns the mode of the program
 
